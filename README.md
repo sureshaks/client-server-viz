@@ -27,3 +27,8 @@
 2. Go to the client folder and run the following command on the command line - __python -m SimpleHTTPServer 8000__
 
 3. Visit http://localhost:8000/ to see the visualization
+
+The page should look something like this:
+
+
+<img src="https://github.com/sureshaks/client-server-viz/blob/master/landing_page.png"  alt="Home page"/>
