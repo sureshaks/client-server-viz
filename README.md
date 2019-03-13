@@ -25,3 +25,5 @@
 1. Go to the server folder and run the flask_roc.py file (Run it through the cmd using __python flask_roc.py__)
 
 2. Go to the client folder and run the following command on the command line - __python -m SimpleHTTPServer 8000__
+
+3. Visit http://localhost:8000/ to see the visualization
