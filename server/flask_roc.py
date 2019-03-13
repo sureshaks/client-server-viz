@@ -22,13 +22,18 @@ class ROC(Resource):
 		# you need to preprocess the data according to user preferences (only fit preprocessing on train data)
 		# fit the model on the training set
 		# predict probabilities on test set
+		
 		response = {}
+		
+		# parameter checks
 		if preprocessing != "std" and preprocessing != "min_max" and (c is not float or c is not int):
 			response["status"] = "error"
 			response["message"] = "incorrect parameters"
 			response["data"] = []
 			return response
 		
+		
+		# preprocessing
 		if preprocessing == "std":
 			scaler = MinMaxScaler()
 			scaler.fit(X_train)
@@ -40,21 +45,25 @@ class ROC(Resource):
 			X_train_scaled = scaler.transform(X_train)
 			X_test_scaled = scaler.transform(X_test)
 			
-			
+		# modeling
 		model = LogisticRegression(C=c).fit(X_train_scaled, y_train)
 		
-		scores = [el[1] for el in model.predict_proba(X_test_scaled)]
 		
-		
+		# roc
+		scores = [el[1] for el in model.predict_proba(X_test_scaled)]		
 		fpr, tpr, thresholds = roc_curve(y_test, scores, pos_label=1)
 		
+		# restructure the data for the response
 		data = {}
 		roc_points = []
 		for i in range(0, len(thresholds)):
 			roc_points.append({"fpr": str(fpr[i]), "tpr": str(tpr[i]), "threshold": str(thresholds[i])})
-			
+
+		# auc
 		data["roc_points"] = roc_points
 		data["auc_score"] = roc_auc_score(y_test, scores)
+		
+		# return response
 		return {
 			"status": "success",
 			"message": "model ran successfully",
